@@ -135,4 +135,4 @@ graph TD
 
 ---
 
-> **🔗 Ссылка на Figma (ER-диаграмма, User Flow, Дизайн):** [https://www.figma.com/design/fsDGXbYVIP8JVttjrY7zjr/Хак?node-id=0-1&p=f&t=xb88eTvoWwWc5fn3-0]
+> **🔗 Ссылка на Figma (ER-диаграмма, User Flow, Дизайн):** [https://www.figma.com/design/fsDGXbYVIP8JVttjrY7zjr/Хак?node-id=0-1&p=f&t=xb88eTvoWwWc5fn3-0](https://www.figma.com/design/fsDGXbYVIP8JVttjrY7zjr/Хак?node-id=0-1&p=f&t=xb88eTvoWwWc5fn3-0)

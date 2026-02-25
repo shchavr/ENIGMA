@@ -10,6 +10,9 @@
 [![Vue.js](https://img.shields.io/badge/Vue.js-4FC08D?style=for-the-badge&logo=vue.js)]()
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker)]()
 
+[![Figma](https://img.shields.io/badge/Figma-Проект-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/design/fsDGXbYVIP8JVttjrY7zjr/Хак?node-id=0-1&p=f&t=xb88eTvoWwWc5fn3-0)
+[![Design](https://img.shields.io/badge/Дизайн-User_Flow_&_ER--диаграмма-5865F2?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/design/fsDGXbYVIP8JVttjrY7zjr/Хак?node-id=0-1&p=f&t=xb88eTvoWwWc5fn3-0)
+
 </div>
 
 ## 📌 О проекте

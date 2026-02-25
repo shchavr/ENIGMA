@@ -30,9 +30,7 @@
 [![Figma](https://img.shields.io/badge/Figma-Смотреть_User_Flow,_ER--диаграмму_и_Дизайн-F24E1E?style=for-the-badge&logo=figma&logoColor=white&labelColor=1a1a1a&color=F24E1E)](https://www.figma.com/design/fsDGXbYVIP8JVttjrY7zjr/Хак?node-id=0-1&p=f&t=xb88eTvoWwWc5fn3-0)
 
 </div>
-
-* первая страница Дизайн
-* вторая страница User Flow и Er-диаграмма 
+p.s первая страница Дизайн, вторая страница User Flow и Er-диаграмма 
 
 ## 🎯 Цели проекта
 

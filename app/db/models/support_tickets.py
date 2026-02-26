@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app.db.base import Base
@@ -22,3 +23,7 @@ class SupportTicket(Base):
     status = Column(String, default="new")  # new, answered, closed
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
     updated_at = Column(TIMESTAMP(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    email = relationship("Email")
+    responses = relationship("Response", backref="ticket")
+    logs = relationship("AdminLog", backref="ticket")

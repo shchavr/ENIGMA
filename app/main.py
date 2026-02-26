@@ -14,6 +14,22 @@ app.include_router(tickets.router, prefix="/api/v1")
 app.include_router(admins.router, prefix="/api/v1")
 
 
+# Email
+#   ↓
+# MLRequest
+#   ↓
+# SupportTicket (status=new)
+#   ↓
+# ML генерирует ответ
+#   ↓
+# Response (is_ai_generated=True)
+#   ↓
+# Email отправляется клиенту
+#   ↓
+# SupportTicket.status = "answered"
+#   ↓
+# AdminLog (action="auto_answered")
+
 def email_polling_loop():
     while True:
         try:

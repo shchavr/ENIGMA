@@ -15,10 +15,20 @@ class SupportTicketBase(BaseModel):
 class SupportTicketCreate(SupportTicketBase):
     email_id: int
 
-class SupportTicketRead(SupportTicketBase):
+class SupportTicketRead(BaseModel):
     id: int
     email_id: int
+
+    full_name: str | None
+    company: str | None
+    phone: str | None
+    device_model: str | None
+    serial_numbers: str | None
+    category: str | None
+    sentiment: str | None
+    problem_summary: str | None
     status: str
+
     created_at: datetime
     updated_at: datetime
 

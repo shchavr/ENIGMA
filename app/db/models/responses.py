@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, TIMESTAMP, ForeignKey, Boolean, Text
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app.db.base import Base
@@ -16,3 +17,5 @@ class Response(Base):
     sent_to_user = Column(Boolean, default=False)
     sent_at = Column(TIMESTAMP(timezone=True))
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
+
+    ticket = relationship("SupportTicket", back_populates="responses")

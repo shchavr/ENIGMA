@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, TIMESTAMP, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app.db.base import Base
@@ -12,3 +13,5 @@ class AdminLog(Base):
     ticket_id = Column(Integer, ForeignKey("support_tickets.id"))
     action = Column(String)
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
+
+    ticket = relationship("SupportTicket", back_populates="logs")

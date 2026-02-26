@@ -22,8 +22,10 @@ class SupportTicket(Base):
 
     status = Column(String, default="new")  # new, answered, closed
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
-    updated_at = Column(TIMESTAMP(timezone=True), server_default=func.now(), onupdate=func.now())
+    updated_at = Column(
+        TIMESTAMP(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
 
-    email = relationship("Email")
-    responses = relationship("Response", backref="ticket")
-    logs = relationship("AdminLog", backref="ticket")
+    email = relationship("Email", back_populates="tickets")
+    responses = relationship("Response", back_populates="ticket")
+    logs = relationship("AdminLog", back_populates="ticket")

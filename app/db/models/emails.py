@@ -14,7 +14,7 @@ class Email(Base):
     subject = Column(String)
     body = Column(Text, nullable=False)
     received_at = Column(TIMESTAMP(timezone=True), nullable=False)
-    processing_status = Column(String, default="received")  # received, sent_to_ml, answered, failed
+    processing_status = Column(String, default="received")
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
 
-    tickets = relationship("SupportTicket", backref="email")
+    tickets = relationship("SupportTicket", back_populates="email")

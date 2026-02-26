@@ -2,13 +2,28 @@ import threading
 import time
 
 from fastapi import FastAPI
+# AntonCommited
+from starlette.middleware.cors import CORSMiddleware
+# AntonCommited
 
 from app.api.utilits.create_admin import create_default_admin
 from app.api.v1 import admins, tickets, emails
 from app.services.email_processing_service import fetch_and_process_emails
 
 app = FastAPI(title="Support AI")
-
+# AntonCommited
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],  # Разрешаем все методы (GET, POST, PUT, DELETE и т.д.)
+    allow_headers=["*"],  # Разрешаем все заголовки
+)
+# AntonCommited
 app.include_router(emails.router, prefix="/api/v1")
 app.include_router(tickets.router, prefix="/api/v1")
 app.include_router(admins.router, prefix="/api/v1")

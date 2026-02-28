@@ -1,6 +1,6 @@
-import os
 from groq import Groq
 
+from app.config import AI_TOKEN
 
 FIELD_NAMES_RU = {
     "full_name": "ФИО",
@@ -15,8 +15,8 @@ class ResponseGenerator:
     def __init__(self):
         try:
             self.client = Groq(
-                        api_key="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"
-                    )
+                api_key=AI_TOKEN
+            )
             self.model = "llama-3.3-70b-versatile"
             self.use_groq = True
             print("✅ ResponseGenerator: Groq подключен")

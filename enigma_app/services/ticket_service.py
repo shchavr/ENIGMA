@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from enigma_app.config import ML_URL
 from enigma_app.db import Email, SupportTicket, MLRequest, Response
+from enigma_app.db.models.device_problem_heatmap import DeviceProblemHeatmap
 
 
 def process_email_with_ml(email_obj: Email):
@@ -54,7 +55,6 @@ def create_ticket_from_email(db: Session, email_obj: Email):
         return existing_ticket
 
     ml_data = process_email_with_ml(email_obj)
-    print(ml_data)
     ml_request = MLRequest(
         email_id=email_obj.id,
         sent_to_ml_at=datetime.utcnow(),
@@ -79,6 +79,21 @@ def create_ticket_from_email(db: Session, email_obj: Email):
         status="new"
     )
     db.add(ticket)
+
+    if ml_data["device_model"]:
+        heatmap_entry = db.query(DeviceProblemHeatmap).filter(
+            DeviceProblemHeatmap.device_model == ml_data["device_model"]
+        ).first()
+
+        if heatmap_entry:
+            heatmap_entry.problem_count += 1
+        else:
+            heatmap_entry = DeviceProblemHeatmap(
+                device_model=ml_data["device_model"],
+                problem_count=1
+            )
+            db.add(heatmap_entry)
+
     db.commit()
     db.refresh(ticket)
 
@@ -97,5 +112,5 @@ def create_ticket_from_email(db: Session, email_obj: Email):
 
     db.commit()
 
-    print(f"Тикет {ticket.id} создан")
+    print(f"Тикет {ticket.id} создан, heatmap обновлён")
     return ticket

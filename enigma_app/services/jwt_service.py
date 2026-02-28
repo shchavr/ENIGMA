@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import jwt
 
-from app.config import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
+from enigma_app.config import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
 
 
 def create_access_token(data: dict, expires_delta: timedelta = None):

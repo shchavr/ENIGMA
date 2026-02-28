@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP
 from sqlalchemy.sql import func
 
-from app.db.base import Base
+from enigma_app.db.base import Base
 
 
 class User(Base):

@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 
-from app.db.models.user import User
-from app.db.session import get_db
-from app.services.auth_service import hash_password
+from enigma_app.db.models.user import User
+from enigma_app.db.session import get_db
+from enigma_app.services.auth_service import hash_password
 
 def create_default_admin():
     db: Session = next(get_db())

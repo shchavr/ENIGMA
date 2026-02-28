@@ -2,10 +2,11 @@ import email
 import imaplib
 from datetime import datetime
 from email.header import decode_header
+from email.utils import parseaddr
 
-from app.config import EMAIL_HOST, EMAIL_PORT, EMAIL_PASSWORD, EMAIL_USER
-from app.db import Email
-from app.db.session import get_db
+from enigma_app.config import EMAIL_HOST, EMAIL_PORT, EMAIL_PASSWORD, EMAIL_USER
+from enigma_app.db import Email
+from enigma_app.db.session import get_db
 
 
 def get_email_body(msg):
@@ -63,10 +64,10 @@ def fetch_and_save_emails():
         body = get_email_body(msg)
         subject = decode_mime_header(msg.get("Subject"))
         sender = decode_mime_header(msg.get("From"))
-
+        name, email_address = parseaddr(sender)
         email_obj = Email(
             message_id=msg.get("Message-ID"),
-            sender_email=sender,
+            sender_email=email_address,
             subject=subject,
             body=body,
             received_at=datetime.utcnow(),

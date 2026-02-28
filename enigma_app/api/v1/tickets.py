@@ -5,10 +5,10 @@ from fastapi import APIRouter
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_admin
-from app.db import SupportTicket
-from app.db.session import get_db
-from app.schemas.support_tickets import SupportTicketRead
+from enigma_app.api.deps import get_current_admin
+from enigma_app.db import SupportTicket
+from enigma_app.db.session import get_db
+from enigma_app.schemas.support_tickets import SupportTicketRead
 
 router = APIRouter(prefix="/tickets", tags=["tickets"])
 

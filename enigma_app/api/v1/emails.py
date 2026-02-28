@@ -3,10 +3,10 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_admin
-from app.db import Email
-from app.db.session import get_db
-from app.schemas.emails import EmailRead
+from enigma_app.api.deps import get_current_admin
+from enigma_app.db import Email
+from enigma_app.db.session import get_db
+from enigma_app.schemas.emails import EmailRead
 
 router = APIRouter(prefix="/emails", tags=["emails"])
 

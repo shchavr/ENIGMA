@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
-from app.db import User
-from app.db.session import get_db
-from app.schemas.auth import TokenResponse
-from app.services.auth_service import verify_password
-from app.services.jwt_service import create_access_token
+from enigma_app.db import User
+from enigma_app.db.session import get_db
+from enigma_app.schemas.auth import TokenResponse
+from enigma_app.services.auth_service import verify_password
+from enigma_app.services.jwt_service import create_access_token
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/admin/login")

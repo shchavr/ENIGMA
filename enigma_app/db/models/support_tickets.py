@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-from app.db.base import Base
+from enigma_app.db.base import Base
 
 
 class SupportTicket(Base):
@@ -19,6 +19,8 @@ class SupportTicket(Base):
     category = Column(String)
     sentiment = Column(String)  # positive, neutral, negative
     problem_summary = Column(Text)
+
+    email_from_text = Column(String)  # новое поле для email, извлечённого из текста
 
     status = Column(String, default="new")  # new, answered, closed
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())

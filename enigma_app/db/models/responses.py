@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, TIMESTAMP, ForeignKey, Boolean, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-from app.db.base import Base
+from enigma_app.db.base import Base
 
 
 class Response(Base):

@@ -8,3 +8,6 @@ SQLAlchemy==2.0.47
 python-multipart
 pydantic[email]
 argon2_cffi
+groq~=1.0.0
+transformers~=5.2.0
+requests~=2.32.5

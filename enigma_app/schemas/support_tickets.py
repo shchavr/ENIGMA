@@ -35,3 +35,25 @@ class SupportTicketRead(BaseModel):
     model_config = {
         "from_attributes": True
     }
+
+class TicketRead(BaseModel):
+    id: int
+    date: str
+    full_name: str
+    subject: str
+    object: str
+    phone: str
+    email: str
+    serial_numbers: str
+    device_model: str
+    sentiment: str
+    raw_body: str
+    status: str
+
+    class Config:
+        from_attributes = True
+
+
+class TicketReplyRequest(BaseModel):
+    subject: str
+    body: str

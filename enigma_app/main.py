@@ -3,9 +3,9 @@ import time
 
 from fastapi import FastAPI
 
-from app.api.utilits.create_admin import create_default_admin
-from app.api.v1 import admins, tickets, emails
-from app.services.email_processing_service import fetch_and_process_emails
+from enigma_app.api.utilits.create_admin import create_default_admin
+from enigma_app.api.v1 import admins, tickets, emails, table
+from enigma_app.services.email_processing_service import fetch_and_process_emails
 
 app = FastAPI(title="Support AI")
 
@@ -13,30 +13,16 @@ app.include_router(emails.router, prefix="/api/v1")
 app.include_router(tickets.router, prefix="/api/v1")
 app.include_router(admins.router, prefix="/api/v1")
 
-
-# Email
-#   ↓
-# MLRequest
-#   ↓
-# SupportTicket (status=new)
-#   ↓
-# ML генерирует ответ
-#   ↓
-# Response (is_ai_generated=True)
-#   ↓
-# Email отправляется клиенту
-#   ↓
-# SupportTicket.status = "answered"
-#   ↓
-# AdminLog (action="auto_answered")
+app.include_router(table.router, prefix="/api/v1")
 
 def email_polling_loop():
     while True:
         try:
             fetch_and_process_emails()
+            print("Email polling")
         except Exception as e:
             print(f"[ERROR] Ошибка в email_polling_loop: {e}")
-        time.sleep(60)
+        time.sleep(10)
 
 
 @app.on_event("startup")

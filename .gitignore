@@ -24,7 +24,7 @@ ml_model
 /
 fastapi
 /
-.gitignore
+
 
 root
 Uploading Repo Folder
@@ -498,7 +498,7 @@ csx/
 ecf/
 rcf/
 
-# Windows Store app package directories and files
+# Windows Store enigma_app package directories and files
 AppPackages/
 BundleArtifacts/
 Package.StoreAssociation.xml
@@ -676,3 +676,4 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,python,windows,git,linux,venv
+/app/

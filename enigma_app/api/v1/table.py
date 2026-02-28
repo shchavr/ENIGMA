@@ -45,7 +45,8 @@ def get_tickets(
                 device_model=t.device_model or "",
                 sentiment=t.sentiment or "",
                 status=t.status or "",
-                raw_body=t.email.body if t.email else ""
+                raw_body=t.email.body if t.email else "",
+                ai_generated_response=t.responses[-1].response_text if t.responses else None,
             )
         )
 

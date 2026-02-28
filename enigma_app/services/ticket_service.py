@@ -65,7 +65,6 @@ async def create_ticket_from_email(db: Session, email_obj: Email):
     db.add(ml_request)
     db.commit()
     db.refresh(ml_request)
-
     ticket = SupportTicket(
         email_id=email_obj.id,
         full_name=ml_data["full_name"],
@@ -77,7 +76,8 @@ async def create_ticket_from_email(db: Session, email_obj: Email):
         sentiment=ml_data["sentiment"],
         problem_summary=ml_data["problem_summary"],
         email_from_text=ml_data.get("email_from_text"),
-        status="new"
+        status="new",
+        ai_generated_response=ml_data.get("raw_ml_response").get("generated_response")
     )
     db.add(ticket)
 

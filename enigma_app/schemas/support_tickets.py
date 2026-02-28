@@ -49,6 +49,7 @@ class TicketRead(BaseModel):
     sentiment: str
     raw_body: str
     status: str
+    ai_generated_response: str | None
 
     class Config:
         from_attributes = True

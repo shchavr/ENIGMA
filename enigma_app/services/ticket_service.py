@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from enigma_app.config import ML_URL
 from enigma_app.db import Email, SupportTicket, MLRequest, Response
 from enigma_app.db.models.device_problem_heatmap import DeviceProblemHeatmap
+from enigma_app.tg_bot.admin_alert import send_admin_alert, is_important_email
 
 
 def process_email_with_ml(email_obj: Email):
@@ -46,7 +47,7 @@ def process_email_with_ml(email_obj: Email):
     }
 
 
-def create_ticket_from_email(db: Session, email_obj: Email):
+async def create_ticket_from_email(db: Session, email_obj: Email):
     existing_ticket = db.query(SupportTicket).filter(
         SupportTicket.email_id == email_obj.id
     ).first()
@@ -95,7 +96,9 @@ def create_ticket_from_email(db: Session, email_obj: Email):
             db.add(heatmap_entry)
 
     db.commit()
-    db.refresh(ticket)
+    if ml_data["sentiment"] == "NEGATIVE" and is_important_email(ml_data.get("email_from_text")):
+        await send_admin_alert(ticket, ml_data)
+        print('''⚠️ Админ оповещение отправлено!''')
 
     generated_text = ml_data["raw_ml_response"].get("generated_response")
 

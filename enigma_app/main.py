@@ -1,5 +1,4 @@
-import threading
-import time
+import asyncio
 
 from fastapi import FastAPI
 
@@ -15,20 +14,21 @@ app.include_router(admins.router, prefix="/api/v1")
 
 app.include_router(table.router, prefix="/api/v1")
 
-def email_polling_loop():
+
+async def email_polling_loop():
     while True:
         try:
-            fetch_and_process_emails()
+            await fetch_and_process_emails()
             print("Email polling")
         except Exception as e:
             print(f"[ERROR] Ошибка в email_polling_loop: {e}")
-        time.sleep(10)
+        await asyncio.sleep(10)
 
 
 @app.on_event("startup")
-def start_email_polling():
-    thread = threading.Thread(target=email_polling_loop, daemon=True)
-    thread.start()
+async def start_email_polling():
+    import asyncio
+    asyncio.create_task(email_polling_loop())
 
 
 @app.on_event("startup")

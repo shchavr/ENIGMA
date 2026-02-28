@@ -18,3 +18,6 @@ EMAIL_HOST = os.getenv("EMAIL_HOST", "imap.gmail.com")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", 993))
 EMAIL_USER = os.getenv("EMAIL_USER")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+
+ADMIN_CHAT_ID = os.getenv("ADMIN_CHAT_ID")
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")

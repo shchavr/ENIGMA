@@ -43,6 +43,7 @@ class TicketRead(BaseModel):
     subject: str
     object: str
     phone: str
+    category: str
     email: str
     serial_numbers: str
     device_model: str

@@ -39,6 +39,7 @@ def get_tickets(
                 full_name=t.full_name or "",
                 subject=t.problem_summary or "",
                 object=t.company or "",
+                category=t.category or "",
                 phone=t.phone or "",
                 email=email_to_show,
                 serial_numbers=t.serial_numbers or "",

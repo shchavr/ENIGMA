@@ -19,7 +19,6 @@ class SupportTicket(Base):
     category = Column(String)
     sentiment = Column(String)  # positive, neutral, negative
     problem_summary = Column(Text)
-
     email_from_text = Column(String)
     ai_generated_response = Column(Text)
     status = Column(String, default="new")  # new, answered, closed

@@ -1,12 +1,23 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from app.schemas import EmailRequest
-from app.services.sentiment import SentimentService
 from app.services.classifier import ClassificationService
+from app.services.document_search import DocumentSearchService
 from app.services.extractor import ExtractionService
 from app.services.response_gen import ResponseGenerator
-from app.services.document_search import DocumentSearchService
+from app.services.sentiment import SentimentService
 
 app = FastAPI(title="AI Support ML Service", version="2.0")
+
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 sentiment_service = SentimentService()
 classification_service = ClassificationService()
@@ -17,7 +28,6 @@ document_service = DocumentSearchService()
 
 @app.post("/ml/analyze")
 def analyze_email(request: EmailRequest):
-
     text = request.text
 
     sentiment = sentiment_service.analyze(text)

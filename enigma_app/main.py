@@ -1,12 +1,22 @@
 import asyncio
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from enigma_app.api.utilits.create_admin import create_default_admin
 from enigma_app.api.v1 import admins, tickets, emails, table
 from enigma_app.services.email_processing_service import fetch_and_process_emails
 
 app = FastAPI(title="Support AI")
+
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(emails.router, prefix="/api/v1")
 app.include_router(tickets.router, prefix="/api/v1")

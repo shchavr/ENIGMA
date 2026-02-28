@@ -11,3 +11,4 @@ argon2_cffi
 groq~=1.0.0
 transformers~=5.2.0
 requests~=2.32.5
+openpyxl~=3.1.5

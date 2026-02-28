@@ -1,6 +1,9 @@
+from io import BytesIO
 from typing import List
 
+import openpyxl
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
 from enigma_app.api.deps import get_current_admin
@@ -47,6 +50,59 @@ def get_tickets(
         )
 
     return result
+
+
+@router.get("/export")
+def export_tickets(
+        db: Session = Depends(get_db)
+):
+    """Выгрузка всех тикетов в Excel"""
+    tickets = (
+        db.query(SupportTicket)
+        .join(SupportTicket.email)
+        .order_by(SupportTicket.created_at.desc())
+        .all()
+    )
+
+    # Создаем рабочую книгу и лист
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Tickets"
+
+    # Заголовки
+    headers = [
+        "ID", "Дата", "ФИО", "Тема", "Компания", "Телефон",
+        "Email", "Серийные номера", "Модель устройства", "Сентимент", "Статус", "Текст письма"
+    ]
+    ws.append(headers)
+
+    for t in tickets:
+        email_to_show = t.email_from_text or (t.email.sender_email if t.email else "")
+        ws.append([
+            t.id,
+            t.created_at.strftime("%Y-%m-%d %H:%M"),
+            t.full_name or "",
+            t.problem_summary or "",
+            t.company or "",
+            t.phone or "",
+            email_to_show,
+            t.serial_numbers or "",
+            t.device_model or "",
+            t.sentiment or "",
+            t.status or "",
+            t.email.body if t.email else ""
+        ])
+
+    # Сохраняем в буфер
+    stream = BytesIO()
+    wb.save(stream)
+    stream.seek(0)
+
+    return StreamingResponse(
+        stream,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": "attachment; filename=tickets.xlsx"}
+    )
 
 
 @router.post("/{ticket_id}/reply")

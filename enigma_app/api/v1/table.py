@@ -126,7 +126,7 @@ async def reply_to_ticket(
     try:
         sent_time = await send_email(to_email, data.subject, data.body)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Ошибка при отправке письма: {e}")
+        raise HTTPException(status_code=200, detail=f"Ошибка при отправке письма: {e}")
 
     response = Response(
         ticket_id=ticket.id,

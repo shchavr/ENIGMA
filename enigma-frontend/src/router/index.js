@@ -4,6 +4,7 @@ import { useDataStore } from '../stores/counter'
 import App from '../App.vue'
 import Login from '../page/login.vue'
 import mainPage from '../page/mainPage.vue'
+import hitmap from '../page/hitmap.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,11 @@ const router = createRouter({
       name: 'Login',
       component: Login,
     },
+    {
+      path: '/analyze',
+      name: 'hitmap',
+      component: hitmap,
+    }
   ],
 })
 

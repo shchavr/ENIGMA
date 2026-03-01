@@ -1,5 +1,6 @@
 <template>
   <div class="page-wrapper">
+    <HeaderVue/>
     <div class="background-img">
       <img src="../assets/Vector2.png" alt="">
     </div>
@@ -19,6 +20,7 @@
             <div class="search-wrapper">
               <i class="pi pi-search"></i>
               <InputText v-model="filters.global.value" placeholder="Поиск..." />
+              <button class="export-btn" @click="exportCSV">Экспорт таблицы</button>
             </div>
           </template>
         
@@ -177,6 +179,7 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import Sidebar from 'primevue/sidebar';
+import HeaderVue from "../components/HeaderVue.vue";
 
 const store = useDataStore();
 const emails = computed(() => store.getEmails);
@@ -211,6 +214,10 @@ const formatDate = (dateString) => {
   return `${day}.${month}.${year}`;
 };
 
+function exportCSV() {
+  store.exportToCSV();
+}
+
 function generateAIResponse(ai_generated_response, ) {
   generateStatus.value = true
   if (!ai_generated_response) {
@@ -228,7 +235,6 @@ function generateAIResponse(ai_generated_response, ) {
 }
 
 async function sendAnswer(id, operatorMessage, subject) {
-  alert('Начал')
   generateStatus.value = true
   try {
     await store.PostAnswer(id, {
@@ -240,6 +246,8 @@ async function sendAnswer(id, operatorMessage, subject) {
     generateStatus.value = false;
   } catch (error) {
     console.error('Ошибка отправки:', error);
+    answerSend.value = false;
+    generateStatus.value = false;
   }
 }
 </script>
@@ -249,6 +257,7 @@ async function sendAnswer(id, operatorMessage, subject) {
   width: 100%;
   min-height: 98vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: stretch;
   position: relative;
@@ -261,6 +270,26 @@ async function sendAnswer(id, operatorMessage, subject) {
   z-index: -1;
   top: -80px;
   right: -80px;
+}
+
+.export-btn {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: #6ab23d;
+  color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.export-btn:hover {
+  background: #84cb55;
+}
+
+.export-btn:active {
+  background: #4c8029;
 }
 
 :deep(.nowrap) {

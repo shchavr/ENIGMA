@@ -6,7 +6,8 @@ export const baseUrl = import.meta.env.VITE_FRONTEND_URL;
 export const useDataStore = defineStore('data', {
   state: () => ({
     auth_key: '',
-    emails: []
+    emails: [],
+    map: []
   }),
   actions: {
     setTokenRole(auth_key) {
@@ -58,9 +59,61 @@ export const useDataStore = defineStore('data', {
         throw error
       }
     },
+    async exportToCSV() {
+      try {
+        const response = await axios.get(
+          `${baseUrl}/api/v1/admin/tickets/export`,
+          {
+            headers: {
+              Authorization: `Bearer ${this.auth_key}`
+            },
+            responseType: 'blob'
+          }
+        )
+
+        // создаём blob
+        const blob = new Blob([response.data], { type: 'text/csv' })
+        const url = window.URL.createObjectURL(blob)
+
+        // создаём временную ссылку
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'tickets.csv')
+        document.body.appendChild(link)
+        link.click()
+
+        // очистка
+        link.remove()
+        window.URL.revokeObjectURL(url)
+
+      } catch (error) {
+        console.error(
+          'Ошибка при получении данных:',
+          error.response?.data || error.message
+        )
+        throw error
+      }
+    },
+    async FetchHitMap() {
+      try {
+        const response = await axios.get(`${baseUrl}/api/v1/heatmap/heatmap`,
+          {
+            headers: {
+              'Authorization': `Bearer ${this.auth_key}`
+            }
+          }
+        );
+        this.map = response.data
+        console.log(response.data)
+      } catch (error) {
+        console.error('Ошибка при получении данных:', error.response?.data || error.message)
+        throw error
+      }
+    },
   },
   getters: {
-    getEmails: (s) => s.emails
+    getEmails: (s) => s.emails,
+    getMap: (s) => s.map,
   },
   persist: {
     key: 'data-store',

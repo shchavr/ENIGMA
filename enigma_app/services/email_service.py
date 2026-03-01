@@ -56,6 +56,7 @@ def fetch_and_save_emails():
     mail.select("inbox")
 
     status, data = mail.search(None, "UNSEEN")
+    print(data)
     for num in data[0].split():
         status, msg_data = mail.fetch(num, "(RFC822)")
         raw_email = msg_data[0][1]

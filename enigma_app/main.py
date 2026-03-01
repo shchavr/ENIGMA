@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from enigma_app.api.utilits.create_admin import create_default_admin
-from enigma_app.api.v1 import admins, tickets, emails, table
+from enigma_app.api.v1 import admins, tickets, emails, table, heatmap
 from enigma_app.services.email_processing_service import fetch_and_process_emails
 
 app = FastAPI(title="Support AI")
@@ -23,6 +23,7 @@ app.include_router(tickets.router, prefix="/api/v1")
 app.include_router(admins.router, prefix="/api/v1")
 
 app.include_router(table.router, prefix="/api/v1")
+app.include_router(heatmap.router, prefix="/api/v1")
 
 
 async def email_polling_loop():
@@ -32,7 +33,7 @@ async def email_polling_loop():
             print("Email polling")
         except Exception as e:
             print(f"[ERROR] Ошибка в email_polling_loop: {e}")
-        await asyncio.sleep(10)
+        await asyncio.sleep(30)
 
 
 @app.on_event("startup")

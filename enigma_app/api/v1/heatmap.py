@@ -8,7 +8,7 @@ from enigma_app.db.models.device_problem_heatmap import DeviceProblemHeatmap
 from enigma_app.db.session import get_db
 from enigma_app.schemas.heatmap import DeviceHeatmapRead
 
-router = APIRouter(prefix="/tickets", tags=["tickets"])
+router = APIRouter(prefix="/heatmap", tags=["heatmap"])
 
 
 @router.get("/heatmap", response_model=List[DeviceHeatmapRead])

@@ -2,7 +2,7 @@ from io import BytesIO
 from typing import List
 
 import openpyxl
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
@@ -107,32 +107,34 @@ def export_tickets(
     )
 
 
-@router.post("/{ticket_id}/reply")
-async def reply_to_ticket(
-        ticket_id: int,
-        data: TicketReplyRequest,
-        db: Session = Depends(get_db),
-        admin: dict = Depends(get_current_admin),
+async def process_ticket_reply(
+    ticket_id: int,
+    subject: str,
+    body: str,
+    admin: dict,
+    db: Session
 ):
-    """Отправка письма пользователю по тикету с приоритетом email из текста"""
     ticket = db.query(SupportTicket).filter(SupportTicket.id == ticket_id).first()
     if not ticket:
-        raise HTTPException(status_code=404, detail="Тикет не найден")
+        # Здесь можно логировать, что тикет не найден
+        return
 
     to_email = ticket.email_from_text or (ticket.email.sender_email if ticket.email else None)
     if not to_email:
-        raise HTTPException(status_code=400, detail="Email пользователя не найден")
+        # Логируем отсутствие email
+        return
 
     try:
-        sent_time = await send_email(to_email, data.subject, data.body)
+        sent_time = await send_email(to_email, subject, body)
     except Exception as e:
-        raise HTTPException(status_code=200, detail=f"Ошибка при отправке письма: {e}")
+        # Логируем ошибку отправки
+        sent_time = None
 
     response = Response(
         ticket_id=ticket.id,
-        response_text=data.body,
+        response_text=body,
         is_ai_generated=False,
-        sent_to_user=True,
+        sent_to_user=True if sent_time else False,
         sent_at=sent_time,
     )
     db.add(response)
@@ -147,4 +149,25 @@ async def reply_to_ticket(
     db.add(log)
     db.commit()
 
-    return {"message": "Письмо успешно отправлено"}
+
+@router.post("/{ticket_id}/reply")
+async def reply_to_ticket(
+        ticket_id: int,
+        data: TicketReplyRequest,
+        background_tasks: BackgroundTasks,
+        db: Session = Depends(get_db),
+        admin: dict = Depends(get_current_admin),
+):
+    """Отправка письма пользователю по тикету асинхронно в фоне"""
+    # Сразу добавляем задачу в фон
+    background_tasks.add_task(
+        process_ticket_reply,
+        ticket_id=ticket_id,
+        subject=data.subject,
+        body=data.body,
+        admin=admin,
+        db=db
+    )
+
+    # Возвращаем сразу 200
+    return {"message": "Задача отправки письма запущена"}
